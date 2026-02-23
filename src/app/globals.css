@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+:root {
+  --background: #FAF7F2;
+  --foreground: #1A1A1A;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-wine: #722F37;
+  --color-wine-dark: #4A1C23;
+  --color-wine-light: #9B4D56;
+  --color-cream: #FAF7F2;
+  --color-cream-dark: #EDE6D9;
+  --color-gold: #C4A35A;
+  --color-gold-light: #D4B76A;
+  --color-charcoal: #1A1A1A;
+  --color-slate: #4A4A4A;
+  --color-muted: #8B8B8B;
+  --color-warm-border: #E8E0D5;
+  --color-success: #2D6A4F;
+  --color-warning: #E07C24;
+  --color-card: #FFFFFF;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --font-serif: Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1A1210;
+    --foreground: #F5F0E8;
+  }
+
+  @theme inline {
+    --color-cream: #1A1210;
+    --color-cream-dark: #251A14;
+    --color-card: #2A1E18;
+    --color-warm-border: #3D2E24;
+    --color-charcoal: #F5F0E8;
+    --color-slate: #C4B8A8;
+    --color-muted: #8B7E6E;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth page transitions */
+main {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-wine {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-pulse-wine {
+  animation: pulse-wine 1.5s ease-in-out infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-warm-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}

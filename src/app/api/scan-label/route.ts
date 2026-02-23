@@ -1,0 +1,32 @@
+import { NextRequest, NextResponse } from "next/server";
+import { analyzeImage } from "@/lib/claude";
+import { buildLabelScanPrompt } from "@/lib/prompts";
+import { WineInfo, TastePreferences } from "@/types/wine";
+
+export async function POST(request: NextRequest) {
+  try {
+    const { image, mediaType, preferences } = await request.json();
+
+    if (!image || !mediaType) {
+      return NextResponse.json(
+        { error: "Image and media type are required" },
+        { status: 400 }
+      );
+    }
+
+    const prompt = buildLabelScanPrompt(
+      preferences as TastePreferences | null
+    );
+    const response = await analyzeImage(image, mediaType, prompt);
+
+    const wineInfo: WineInfo = JSON.parse(response);
+
+    return NextResponse.json({ wine: wineInfo });
+  } catch (error) {
+    console.error("Label scan error:", error);
+    return NextResponse.json(
+      { error: "Failed to analyze wine label. Please try again." },
+      { status: 500 }
+    );
+  }
+}
