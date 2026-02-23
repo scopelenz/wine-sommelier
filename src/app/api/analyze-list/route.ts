@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { analyzeImage } from "@/lib/claude";
+import { analyzeImage } from "@/lib/ai";
 import { buildWineListPrompt } from "@/lib/prompts";
 import { WineListAnalysis, TastePreferences } from "@/types/wine";
 
 export async function POST(request: NextRequest) {
   try {
-    const { image, mediaType, foodContext, preferences } =
+    const { image, mediaType, foodContext, preferences, provider, apiKey } =
       await request.json();
 
     if (!image || !mediaType) {
@@ -19,7 +19,13 @@ export async function POST(request: NextRequest) {
       foodContext,
       preferences as TastePreferences | null
     );
-    const response = await analyzeImage(image, mediaType, prompt);
+    const response = await analyzeImage(
+      image,
+      mediaType,
+      prompt,
+      provider || "gemini",
+      apiKey
+    );
 
     const analysis: WineListAnalysis = JSON.parse(response);
 

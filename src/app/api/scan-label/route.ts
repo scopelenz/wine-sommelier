@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { analyzeImage } from "@/lib/claude";
+import { analyzeImage } from "@/lib/ai";
 import { buildLabelScanPrompt } from "@/lib/prompts";
 import { WineInfo, TastePreferences } from "@/types/wine";
 
 export async function POST(request: NextRequest) {
   try {
-    const { image, mediaType, preferences } = await request.json();
+    const { image, mediaType, preferences, provider, apiKey } =
+      await request.json();
 
     if (!image || !mediaType) {
       return NextResponse.json(
@@ -17,7 +18,13 @@ export async function POST(request: NextRequest) {
     const prompt = buildLabelScanPrompt(
       preferences as TastePreferences | null
     );
-    const response = await analyzeImage(image, mediaType, prompt);
+    const response = await analyzeImage(
+      image,
+      mediaType,
+      prompt,
+      provider || "gemini",
+      apiKey
+    );
 
     const wineInfo: WineInfo = JSON.parse(response);
 

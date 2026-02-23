@@ -17,7 +17,8 @@ export default function ImageUpload({
 }: ImageUploadProps) {
   const [preview, setPreview] = useState<string | null>(null);
   const [dragActive, setDragActive] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const cameraRef = useRef<HTMLInputElement>(null);
+  const uploadRef = useRef<HTMLInputElement>(null);
 
   const processFile = useCallback(
     (file: File) => {
@@ -74,7 +75,8 @@ export default function ImageUpload({
 
   const clearImage = () => {
     setPreview(null);
-    if (inputRef.current) inputRef.current.value = "";
+    if (cameraRef.current) cameraRef.current.value = "";
+    if (uploadRef.current) uploadRef.current.value = "";
   };
 
   if (isLoading) {
@@ -135,18 +137,24 @@ export default function ImageUpload({
       onDrop={handleDrop}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
-      onClick={() => inputRef.current?.click()}
-      className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-16 transition-all ${
+      className={`flex flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-16 transition-all ${
         dragActive
           ? "border-wine bg-wine/5"
           : "border-warm-border bg-card hover:border-wine/40 hover:bg-wine/5"
       }`}
     >
       <input
-        ref={inputRef}
+        ref={cameraRef}
         type="file"
         accept="image/jpeg,image/png,image/webp"
         capture="environment"
+        onChange={handleFileChange}
+        className="hidden"
+      />
+      <input
+        ref={uploadRef}
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
         onChange={handleFileChange}
         className="hidden"
       />
@@ -172,12 +180,18 @@ export default function ImageUpload({
       <p className="mt-1 text-sm text-muted">{sublabel}</p>
 
       <div className="mt-4 flex gap-2">
-        <span className="rounded-full bg-wine/10 px-4 py-1.5 text-xs font-medium text-wine">
+        <button
+          onClick={() => cameraRef.current?.click()}
+          className="rounded-full bg-wine/10 px-4 py-1.5 text-xs font-medium text-wine"
+        >
           Camera
-        </span>
-        <span className="rounded-full bg-warm-border px-4 py-1.5 text-xs font-medium text-slate">
+        </button>
+        <button
+          onClick={() => uploadRef.current?.click()}
+          className="rounded-full bg-warm-border px-4 py-1.5 text-xs font-medium text-slate"
+        >
           Upload
-        </span>
+        </button>
       </div>
     </div>
   );

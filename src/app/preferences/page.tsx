@@ -62,6 +62,10 @@ const DEFAULT_PREFERENCES: TastePreferences = {
 export default function PreferencesPage() {
   const [prefs, setPrefs] = useState<TastePreferences>(DEFAULT_PREFERENCES);
   const [saved, setSaved] = useState(false);
+  const [provider, setProvider] = useState<"gemini" | "claude">("gemini");
+  const [apiKey, setApiKey] = useState("");
+  const [showKey, setShowKey] = useState(false);
+  const [keySaved, setKeySaved] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem("pour-preferences");
@@ -72,7 +76,23 @@ export default function PreferencesPage() {
         // ignore
       }
     }
+    const storedProvider = localStorage.getItem("pour-provider");
+    if (storedProvider === "claude") setProvider("claude");
+    const storedKey = localStorage.getItem("pour-api-key");
+    if (storedKey) setApiKey(storedKey);
   }, []);
+
+  const handleSaveProvider = () => {
+    localStorage.setItem("pour-provider", provider);
+    const trimmed = apiKey.trim();
+    if (trimmed) {
+      localStorage.setItem("pour-api-key", trimmed);
+    } else {
+      localStorage.removeItem("pour-api-key");
+    }
+    setKeySaved(true);
+    setTimeout(() => setKeySaved(false), 2000);
+  };
 
   const toggleItem = (
     field: "favoriteStyles" | "dislikedStyles" | "preferredRegions",
@@ -110,6 +130,96 @@ export default function PreferencesPage() {
           Tell Pour what you love. Better preferences, better recommendations.
         </p>
       </div>
+
+      {/* AI Provider */}
+      <section className="mb-8 rounded-2xl border border-warm-border bg-card p-4">
+        <h2 className="mb-1 text-xs font-medium uppercase tracking-wider text-wine">
+          AI Engine
+        </h2>
+        <p className="mb-3 text-[11px] text-muted">
+          Gemini Flash is free and works great. Switch to Claude for premium analysis.
+        </p>
+
+        <div className="mb-3 flex gap-2">
+          <button
+            onClick={() => { setProvider("gemini"); setKeySaved(false); }}
+            className={`flex-1 rounded-xl p-3 text-center transition-all ${
+              provider === "gemini"
+                ? "border-2 border-wine bg-wine/5"
+                : "border border-warm-border bg-cream hover:border-wine/30"
+            }`}
+          >
+            <p className={`text-sm font-medium ${provider === "gemini" ? "text-wine" : "text-slate"}`}>
+              Gemini Flash
+            </p>
+            <p className="mt-0.5 text-[10px] text-muted">Free</p>
+          </button>
+          <button
+            onClick={() => { setProvider("claude"); setKeySaved(false); }}
+            className={`flex-1 rounded-xl p-3 text-center transition-all ${
+              provider === "claude"
+                ? "border-2 border-wine bg-wine/5"
+                : "border border-warm-border bg-cream hover:border-wine/30"
+            }`}
+          >
+            <p className={`text-sm font-medium ${provider === "claude" ? "text-wine" : "text-slate"}`}>
+              Claude Sonnet
+            </p>
+            <p className="mt-0.5 text-[10px] text-muted">Bring your key</p>
+          </button>
+        </div>
+
+        {provider === "claude" && (
+          <div className="mt-3">
+            <div className="flex gap-2">
+              <div className="relative flex-1">
+                <input
+                  type={showKey ? "text" : "password"}
+                  value={apiKey}
+                  onChange={(e) => { setApiKey(e.target.value); setKeySaved(false); }}
+                  placeholder="sk-ant-..."
+                  className="w-full rounded-xl border border-warm-border bg-cream px-3 py-2.5 pr-10 font-mono text-xs text-charcoal placeholder:text-muted/50 focus:border-wine focus:outline-none focus:ring-1 focus:ring-wine/20"
+                />
+                <button
+                  onClick={() => setShowKey(!showKey)}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted hover:text-slate"
+                  type="button"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    {showKey ? (
+                      <>
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
+                        <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+                        <line x1="1" y1="1" x2="23" y2="23" />
+                      </>
+                    ) : (
+                      <>
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                        <circle cx="12" cy="12" r="3" />
+                      </>
+                    )}
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <p className="mt-2 text-[11px] text-muted">
+              Get a key at{" "}
+              <a href="https://console.anthropic.com/" target="_blank" rel="noopener noreferrer" className="text-wine underline">
+                console.anthropic.com
+              </a>
+            </p>
+          </div>
+        )}
+
+        <button
+          onClick={handleSaveProvider}
+          className={`mt-3 w-full rounded-xl py-2.5 text-xs font-medium text-white transition-all ${
+            keySaved ? "bg-success" : "bg-wine hover:bg-wine-dark"
+          }`}
+        >
+          {keySaved ? "Saved" : "Save Engine"}
+        </button>
+      </section>
 
       {/* Favorite Styles */}
       <section className="mb-8">

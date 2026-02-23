@@ -59,9 +59,16 @@ export default function WineCard({ wine }: WineCardProps) {
 
         <div className="flex flex-wrap gap-2 text-xs text-muted">
           {wine.vintage && <span>{wine.vintage}</span>}
-          {wine.vintage && <span>-</span>}
-          <span>{wine.region}, {wine.country}</span>
-          {wine.appellation && (
+          {wine.region && !wine.region.toLowerCase().startsWith("unknown") && (
+            <>
+              {wine.vintage && <span>-</span>}
+              <span>
+                {wine.region}
+                {wine.country && !wine.country.toLowerCase().startsWith("unknown") && `, ${wine.country}`}
+              </span>
+            </>
+          )}
+          {wine.appellation && !wine.appellation.toLowerCase().startsWith("unknown") && (
             <>
               <span>-</span>
               <span>{wine.appellation}</span>
@@ -82,14 +89,16 @@ export default function WineCard({ wine }: WineCardProps) {
       </div>
 
       {/* Dinner Party One-Liner */}
-      <div className="rounded-2xl border border-gold/30 bg-gold/5 p-5">
-        <p className="text-xs font-medium uppercase tracking-wider text-gold">
-          Drop this at dinner
-        </p>
-        <p className="mt-2 font-serif text-base leading-relaxed text-charcoal">
-          &ldquo;{wine.dinnerPartyOneLiner}&rdquo;
-        </p>
-      </div>
+      {wine.dinnerPartyOneLiner && (
+        <div className="rounded-2xl border border-warm-border bg-card p-5">
+          <p className="text-xs font-medium uppercase tracking-wider text-gold">
+            Drop this at dinner
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-slate">
+            {`"${wine.dinnerPartyOneLiner}"`}
+          </p>
+        </div>
+      )}
 
       {/* Quality Assessment */}
       <div className="rounded-2xl border border-warm-border bg-card p-5">
@@ -218,7 +227,7 @@ export default function WineCard({ wine }: WineCardProps) {
         <div
           className={`mt-3 overflow-hidden transition-all ${
             expanded === "food"
-              ? "max-h-48 opacity-100"
+              ? "max-h-96 opacity-100"
               : "max-h-0 opacity-0"
           }`}
         >
@@ -262,7 +271,7 @@ export default function WineCard({ wine }: WineCardProps) {
         <div
           className={`mt-3 space-y-3 overflow-hidden transition-all ${
             expanded === "story"
-              ? "max-h-48 opacity-100"
+              ? "max-h-96 opacity-100"
               : "max-h-0 opacity-0"
           }`}
         >

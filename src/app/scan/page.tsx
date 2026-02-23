@@ -31,6 +31,8 @@ export default function ScanPage() {
       setWine(null);
 
       try {
+        const provider = localStorage.getItem("pour-provider") || "gemini";
+        const apiKey = localStorage.getItem("pour-api-key") || undefined;
         const response = await fetch("/api/scan-label", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -38,6 +40,8 @@ export default function ScanPage() {
             image: base64,
             mediaType,
             preferences,
+            provider,
+            apiKey,
           }),
         });
 

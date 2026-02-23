@@ -32,6 +32,8 @@ export default function WineListPage() {
       setAnalysis(null);
 
       try {
+        const provider = localStorage.getItem("pour-provider") || "gemini";
+        const apiKey = localStorage.getItem("pour-api-key") || undefined;
         const response = await fetch("/api/analyze-list", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -40,6 +42,8 @@ export default function WineListPage() {
             mediaType,
             foodContext: foodContext.trim() || undefined,
             preferences,
+            provider,
+            apiKey,
           }),
         });
 
