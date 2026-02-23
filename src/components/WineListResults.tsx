@@ -134,18 +134,20 @@ export default function WineListResults({ analysis }: WineListResultsProps) {
         </div>
       ))}
 
-      {/* Best Value Callout */}
-      <div className="rounded-2xl border border-success/20 bg-success/5 p-5">
-        <p className="text-xs font-medium uppercase tracking-wider text-success">
-          Best Value
-        </p>
-        <p className="mt-2 text-sm leading-relaxed text-slate">
-          {analysis.bestValue}
-        </p>
-      </div>
+      {/* Best Value Callout — hide if only 1 pick */}
+      {analysis.topPicks.length > 1 && analysis.bestValue && (
+        <div className="rounded-2xl border border-success/20 bg-success/5 p-5">
+          <p className="text-xs font-medium uppercase tracking-wider text-success">
+            Best Value
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-slate">
+            {analysis.bestValue}
+          </p>
+        </div>
+      )}
 
-      {/* Avoid */}
-      {analysis.avoidRecommendation && (
+      {/* Avoid — hide if only 1 pick */}
+      {analysis.topPicks.length > 1 && analysis.avoidRecommendation && (
         <div className="rounded-2xl border border-warning/20 bg-warning/5 p-5">
           <p className="text-xs font-medium uppercase tracking-wider text-warning">
             Skip This One
