@@ -7,6 +7,20 @@ export type ImageMediaType =
   | "image/gif"
   | "image/webp";
 
+export function extractJSON(text: string): string {
+  // Strip markdown code fences (```json ... ``` or ``` ... ```)
+  const fenceMatch = text.match(/```(?:json)?\s*\n?([\s\S]*?)\n?\s*```/);
+  if (fenceMatch) {
+    return fenceMatch[1].trim();
+  }
+  // Try to extract raw JSON object/array
+  const jsonMatch = text.match(/[\[{][\s\S]*[\]}]/);
+  if (jsonMatch) {
+    return jsonMatch[0];
+  }
+  return text.trim();
+}
+
 export async function analyzeImage(
   base64Image: string,
   mediaType: ImageMediaType,

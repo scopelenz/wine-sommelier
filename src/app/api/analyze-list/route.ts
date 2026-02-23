@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { analyzeImage } from "@/lib/ai";
+import { analyzeImage, extractJSON } from "@/lib/ai";
 import { buildWineListPrompt } from "@/lib/prompts";
 import { WineListAnalysis, TastePreferences } from "@/types/wine";
 
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
       apiKey
     );
 
-    const analysis: WineListAnalysis = JSON.parse(response);
+    const analysis: WineListAnalysis = JSON.parse(extractJSON(response));
 
     return NextResponse.json({ analysis });
   } catch (error) {

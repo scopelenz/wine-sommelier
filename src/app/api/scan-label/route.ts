@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { analyzeImage } from "@/lib/ai";
+import { analyzeImage, extractJSON } from "@/lib/ai";
 import { buildLabelScanPrompt } from "@/lib/prompts";
 import { WineInfo, TastePreferences } from "@/types/wine";
 
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
       apiKey
     );
 
-    const wineInfo: WineInfo = JSON.parse(response);
+    const wineInfo: WineInfo = JSON.parse(extractJSON(response));
 
     return NextResponse.json({ wine: wineInfo });
   } catch (error) {
