@@ -168,7 +168,7 @@ export default function ImageUpload({
         </svg>
       </div>
 
-      <p className="font-serif text-lg text-charcoal">{label}</p>
+      <p className="font-serif text-lg text-wine">{label}</p>
       <p className="mt-1 text-sm text-muted">{sublabel}</p>
 
       <div className="mt-4 flex gap-2">

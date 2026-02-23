@@ -95,7 +95,7 @@ export default function Navigation() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-warm-border bg-card/80 backdrop-blur-xl">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-warm-border bg-card">
       <div className="mx-auto flex max-w-lg items-center justify-around px-2 py-2">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
@@ -111,8 +111,8 @@ export default function Navigation() {
             >
               {item.icon(isActive)}
               <span
-                className={`text-[10px] font-medium tracking-wide ${
-                  isActive ? "text-wine" : ""
+                className={`text-[10px] font-semibold tracking-wide ${
+                  isActive ? "text-wine-dark" : ""
                 }`}
               >
                 {item.label}

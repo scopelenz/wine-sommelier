@@ -73,7 +73,7 @@ export default function Home() {
     <div className="px-6 pt-14">
       {/* Logo & Header */}
       <div className="mb-12">
-        <h1 className="font-serif text-5xl font-semibold tracking-tight text-charcoal">
+        <h1 className="font-serif text-5xl font-semibold tracking-tight text-wine">
           Pour
         </h1>
         <div className="mt-1 h-0.5 w-8 rounded-full bg-wine" />

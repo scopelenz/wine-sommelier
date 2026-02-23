@@ -65,10 +65,10 @@ export default function ScanPage() {
   };
 
   return (
-    <div className="px-6 pt-10">
+    <div className="px-6 pt-14">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="font-serif text-3xl font-semibold text-charcoal">
+        <h1 className="font-serif text-3xl font-semibold text-wine">
           Scan a Label
         </h1>
         <p className="mt-1 text-sm text-muted">

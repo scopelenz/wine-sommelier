@@ -100,10 +100,10 @@ export default function PreferencesPage() {
   };
 
   return (
-    <div className="px-6 pt-10 pb-8">
+    <div className="px-6 pt-14 pb-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="font-serif text-3xl font-semibold text-charcoal">
+        <h1 className="font-serif text-3xl font-semibold text-wine">
           My Palate
         </h1>
         <p className="mt-1 text-sm text-muted">
