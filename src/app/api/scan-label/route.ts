@@ -3,6 +3,8 @@ import { analyzeImage, extractJSON } from "@/lib/ai";
 import { buildLabelScanPrompt } from "@/lib/prompts";
 import { WineInfo, TastePreferences } from "@/types/wine";
 
+export const maxDuration = 60;
+
 export async function POST(request: NextRequest) {
   try {
     const { image, mediaType, preferences, provider, apiKey } =
