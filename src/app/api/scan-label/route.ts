@@ -33,8 +33,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ wine: wineInfo });
   } catch (error) {
     console.error("Label scan error:", error);
+    const message =
+      error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "Failed to analyze wine label. Please try again." },
+      { error: `Failed to analyze wine label: ${message}` },
       { status: 500 }
     );
   }

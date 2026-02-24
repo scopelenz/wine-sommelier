@@ -34,8 +34,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ analysis });
   } catch (error) {
     console.error("Wine list analysis error:", error);
+    const message =
+      error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "Failed to analyze wine list. Please try again." },
+      { error: `Failed to analyze wine list: ${message}` },
       { status: 500 }
     );
   }

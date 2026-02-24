@@ -38,14 +38,34 @@ export default function ImageUpload({
         return;
       }
 
+      // Resize large images to max 2048px to keep under API limits
+      const img = new Image();
+      img.onload = () => {
+        const MAX_DIM = 2048;
+        let { width, height } = img;
+
+        if (width > MAX_DIM || height > MAX_DIM) {
+          const scale = MAX_DIM / Math.max(width, height);
+          width = Math.round(width * scale);
+          height = Math.round(height * scale);
+        }
+
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d")!;
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+        setPreview(dataUrl);
+
+        const base64 = dataUrl.split(",")[1];
+        onImageSelected(base64, "image/jpeg");
+      };
+
       const reader = new FileReader();
       reader.onload = (e) => {
-        const result = e.target?.result as string;
-        setPreview(result);
-
-        // Extract base64 data (remove the data:image/...;base64, prefix)
-        const base64 = result.split(",")[1];
-        onImageSelected(base64, file.type);
+        img.src = e.target?.result as string;
       };
       reader.readAsDataURL(file);
     },
